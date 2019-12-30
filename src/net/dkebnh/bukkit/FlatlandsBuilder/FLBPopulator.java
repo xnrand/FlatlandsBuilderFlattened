@@ -12,14 +12,12 @@ public class FLBPopulator extends BlockPopulator {
 	private String genMode;
 	private int height;
 	private Material BlockFLB[] = new Material[3];
-	private byte BlockFLBDV[] = new byte[3];
 
 	
-    protected FLBPopulator(int height, Material[] BlockFLB, byte[] BlockFLBDV, String genMode){
+    protected FLBPopulator(int height, Material[] BlockFLB, String genMode){
     	this.genMode = genMode;
         this.height = height;
         this.BlockFLB = BlockFLB;
-        this.BlockFLBDV = BlockFLBDV;
     }
     
 	public void populate(World world, Random random, Chunk chunk) {
@@ -32,8 +30,7 @@ public class FLBPopulator extends BlockPopulator {
         	for(blockx2 = 0; blockx2 < 16; ++blockx2){
         		for(blockz2 = 0; blockz2 < 16; ++blockz2){
         			block = chunk.getBlock(blockx2, height, blockz2);	
-        			block.setType(BlockFLB[0]);
-        			block.setData(BlockFLBDV[0]);
+					block.setType(BlockFLB[0], false);
 				}
         	}
         }else if(genMode == "grid"){
@@ -41,12 +38,10 @@ public class FLBPopulator extends BlockPopulator {
         		for (blockz = 0; blockz < 16; ++blockz){
         			if (blockx == 0 || blockx == 15 || blockz == 0 || blockz == 15){
         				block = chunk.getBlock(blockx, height, blockz);
-        			   	block.setType(BlockFLB[1]);
-        		    	block.setData(BlockFLBDV[1]);
+						block.setType(BlockFLB[1], false);
         			}else{
         				block = chunk.getBlock(blockx, height, blockz);
-    					block.setType(BlockFLB[0]);
-    					block.setData(BlockFLBDV[0]);
+						block.setType(BlockFLB[0], false);
         			}
         		}		
         	}
@@ -56,16 +51,13 @@ public class FLBPopulator extends BlockPopulator {
         			if (blockx == 0 || blockx == 15 || blockz == 0 || blockz == 15){
         				block = chunk.getBlock(blockx, height, blockz);
         				if((chunkx + chunkz) % 2 == 0) {
-        			   		block.setType(BlockFLB[1]);
-        		    		block.setData(BlockFLBDV[1]);
+							block.setType(BlockFLB[1], false);
         		    	}else{
-        		    		block.setType(BlockFLB[2]);
-        		    		block.setData(BlockFLBDV[2]);
+							block.setType(BlockFLB[2], false);
         		    	}
         			}else{
         				block = chunk.getBlock(blockx, height, blockz);
-    					block.setType(BlockFLB[0]);
-    					block.setData(BlockFLBDV[0]);
+						block.setType(BlockFLB[0], false);
         			}
         		}		
         	}
@@ -74,11 +66,9 @@ public class FLBPopulator extends BlockPopulator {
 	    		for (blockz = 0; blockz < 16; ++blockz){
 	    				block = chunk.getBlock(blockx, height, blockz);
 	    				if((chunkx + chunkz) % 2 == 0) {
-	    			   		block.setType(BlockFLB[1]);
-	    		    		block.setData(BlockFLBDV[1]);
+						block.setType(BlockFLB[1], false);
 	    		    	}else{
-	    		    		block.setType(BlockFLB[0]);
-	    		    		block.setData(BlockFLBDV[0]);
+						block.setType(BlockFLB[0], false);
 	    		    	}
 	    		}		
 	    	}
@@ -87,8 +77,7 @@ public class FLBPopulator extends BlockPopulator {
 		        for(blockx2 = 0; blockx2 < 16; ++blockx2){
 		        	for(blockz2 = 0; blockz2 < 16; ++blockz2){
 		        		block = chunk.getBlock(blockx2, height, blockz2);	
-	        			block.setType(BlockFLB[1]);
-	        			block.setData(BlockFLBDV[1]);
+						block.setType(BlockFLB[1], false);
 					}
 		        }
         	}else{
@@ -96,12 +85,10 @@ public class FLBPopulator extends BlockPopulator {
             		for (blockz = 0; blockz < 16; ++blockz){
             			if (blockx == 0 || blockx == 15 || blockz == 0 || blockz == 15){
             				block = chunk.getBlock(blockx, height, blockz);
-            			   	block.setType(BlockFLB[2]);
-            		    	block.setData(BlockFLBDV[2]);
+							block.setType(BlockFLB[2], false);
             			}else{
             				block = chunk.getBlock(blockx, height, blockz);
-        					block.setType(BlockFLB[0]);
-        					block.setData(BlockFLBDV[0]);
+							block.setType(BlockFLB[0], false);
             			}
             		}		
             	}
@@ -111,16 +98,13 @@ public class FLBPopulator extends BlockPopulator {
         		for (blockz = 0; blockz < 16; ++blockz){
         			if (blockx == 0 || blockx == 15 || blockz == 0 || blockz == 15){
         				block = chunk.getBlock(blockx, height, blockz);
-    			   		block.setType(BlockFLB[1]);
-    		    		block.setData(BlockFLBDV[1]);
+						block.setType(BlockFLB[1], false);
         			}else{
         				block = chunk.getBlock(blockx, height, blockz);
         				if((chunkx + chunkz) % 2 == 0) {
-        			   		block.setType(BlockFLB[0]);
-        		    		block.setData(BlockFLBDV[0]);
+							block.setType(BlockFLB[0], false);
         		    	}else{
-        		    		block.setType(BlockFLB[2]);
-        		    		block.setData(BlockFLBDV[2]);
+							block.setType(BlockFLB[2], false);
         		    	}
         			}
         		}		

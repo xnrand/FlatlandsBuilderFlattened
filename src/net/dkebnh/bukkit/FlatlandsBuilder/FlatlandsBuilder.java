@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,9 +17,9 @@ public class FlatlandsBuilder extends JavaPlugin {
 	public YamlConfiguration conf;
 	int height = 64;
 	String genMode = "grid2";
-	String block1 = "wool:15";
-	String block2 = "wool:7";
-	String block3 = "wool:8";
+	String block1 = "black_wool";
+	String block2 = "gray_wool";
+	String block3 = "light_gray_wool";
 	List<String> blacklist = Arrays.asList("lava","water","tnt","bedrock");
     String worldname = "flatlands";
     
@@ -59,15 +57,15 @@ public class FlatlandsBuilder extends JavaPlugin {
 			conf = new YamlConfiguration();        	
 			conf.set("global.defaults.height", 64);       
 			conf.set("global.defaults.mode", "grid2"); 
-			conf.set("global.defaults.block1", "wool:15");        	
-			conf.set("global.defaults.block2", "wool:7");     
-			conf.set("global.defaults.block3", "wool:8");
+			conf.set("global.defaults.block1", "black_wool");
+			conf.set("global.defaults.block2", "gray_wool");
+			conf.set("global.defaults.block3", "light_gray_wool");
 			conf.set("global.blacklist", blacklist);
 			conf.set("worlds.flatlands.height", 64);       
 			conf.set("worlds.flatlands.mode", "grid2"); 
-			conf.set("worlds.flatlands.block1", "wool:15");        	
-			conf.set("worlds.flatlands.block2", "wool:7");     
-			conf.set("worlds.flatlands.block3", "wool:8");
+			conf.set("worlds.flatlands.block1", "black_wool");
+			conf.set("worlds.flatlands.block2", "gray_wool");
+			conf.set("worlds.flatlands.block3", "light_gray_wool");
 			saveSettings();
 		}
 		

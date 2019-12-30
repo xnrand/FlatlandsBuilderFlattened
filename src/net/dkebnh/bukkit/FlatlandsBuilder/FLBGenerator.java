@@ -20,20 +20,16 @@ public class FLBGenerator extends ChunkGenerator{
 	private String genModeParse;
 	private int height = 0;
 	private Material[] BlockFLB = new Material[3];
-	private byte[] BlockFLBDV = new byte[3];
 	private Biome BiomeFLB = Biome.PLAINS;	
 	
 	public void setDefaults(String msg){        
 		genMode = "grid2";      
-		BlockFLB[0] = Material.WOOL;		
-		BlockFLB[1] = Material.WOOL;		
-		BlockFLB[2] = Material.WOOL;		
-		BlockFLBDV[0] = (byte) 0xf;		
-		BlockFLBDV[1] = (byte) 0x7;		
-		BlockFLBDV[2] = (byte) 0x8;
+		BlockFLB[0] = Material.BLACK_WOOL;
+		BlockFLB[1] = Material.GRAY_WOOL;
+		BlockFLB[2] = Material.LIGHT_GRAY_WOOL;
 		
 		if (height != 0){		// Checks to see if a height variable is accepted by FlatlandsBuiler.
-			msg = "[FlatlandsBuilder] No Block Settings provided, using default blocks 'wool:15,wool:7,wool:8'";
+			msg = "[FlatlandsBuilder] No Block Settings provided, using default blocks 'black_wool:gray_wool,light_gray_wool'";
 		}else{
 			height = 64;
 		} 
@@ -41,7 +37,7 @@ public class FLBGenerator extends ChunkGenerator{
 	}
 	
 	public FLBGenerator(){
-		this("64,wool:15,wool:7,wool:8");
+		this("64,black_wool:gray_wool,light_gray_wool");
 	}
 	
 	public FLBGenerator(String id){
@@ -88,37 +84,22 @@ public class FLBGenerator extends ChunkGenerator{
 
                     for (int i = 1; i < tokens.length; i ++){		// Sets blocks array in sequential order.    
                     	int t = i - 1;
-                    	
-                        String materialTokens[] = tokens[i].split("[:]", 2);		// Splits Block Type and Type ID into 2 so it can be parsed by the FlatlandsBuilder.
-    				        
-                        if (materialTokens.length == 2){
-                        	try{
-                        		BlockFLBDV[t] = Byte.parseByte(materialTokens[1]);
-    				        }catch (Exception e){
-    				            log.warning("[FlatlandsBuilder] Invalid Block Data Value '" + materialTokens[1] + "'. Defaulting to 0.");
-    				            BlockFLBDV[t] = (byte) 0x0;
-    				        }
-    				    }
-    				        
-    				    Material mat = Material.matchMaterial(materialTokens[0]);
-    				        
-    				    if (mat == null){
-    				    	try{
-    				    		mat = Material.getMaterial(Integer.parseInt(materialTokens[0]));
-    				        }catch (Exception e){
-    				        
-    				        }
-    				    	
-    				    	if (mat == null){
-    				        	log.warning("[FlatlandsBuilder] Invalid Block ID '" + materialTokens[0] + "'. Defaulting to WHITE_WOOL.");
-    				        	mat = Material.WOOL;
-    				        }
-    				    }
-    				        
-    				    if (!mat.isBlock()){
-    				    	log.warning("[FlatlandsBuilder] Error, Block'" + materialTokens[0] + "' is not a block. Defaulting to WHITE_WOOL.");
-    				    	mat = Material.WOOL;
-    				    }
+
+						String materialToken = tokens[i];
+
+						Material mat = Material.matchMaterial(materialToken);
+
+						if (mat == null){
+							if (mat == null){
+								log.warning("[FlatlandsBuilder] Invalid Block ID '" + materialToken + "'. Defaulting to WHITE_WOOL.");
+								mat = Material.WHITE_WOOL;
+							}
+						}
+
+						if (!mat.isBlock()){
+							log.warning("[FlatlandsBuilder] Error, Block'" + materialToken + "' is not a block. Defaulting to WHITE_WOOL.");
+							mat = Material.WHITE_WOOL;
+						}
        
                     BlockFLB[t] = mat;    
                     }
@@ -160,47 +141,43 @@ public class FLBGenerator extends ChunkGenerator{
             e.printStackTrace();
             height = 64;
             genMode = "grid2";
-            BlockFLB[0] = Material.WOOL;
-    		BlockFLB[1] = Material.WOOL;
-    		BlockFLB[2] = Material.WOOL;
-    		BlockFLBDV[0] = (byte) 0xf;
-    		BlockFLBDV[1] = (byte) 0x7;
-    		BlockFLBDV[2] = (byte) 0x8;
+			BlockFLB[0] = Material.BLACK_WOOL;
+			BlockFLB[1] = Material.GRAY_WOOL;
+			BlockFLB[2] = Material.LIGHT_GRAY_WOOL;
 			}
 			
 		}else{
 			this.setDefaults("[FlatlandsBuilder] No Settings provided, using defaults '64,wool:15,wool:7,wool:8'");
 		}
 	}
-	
+
+	@Override
 	public List<BlockPopulator> getDefaultPopulators(World world){
 		ArrayList<BlockPopulator> populators = new ArrayList<BlockPopulator>();
 		
-		populators.add(new FLBPopulator(height, BlockFLB, BlockFLBDV, genMode));
+		populators.add(new FLBPopulator(height, BlockFLB, genMode));
 		
 		return populators;
 	}
-	
+
+	@Override
 	public Location getFixedSpawnLocation(World world, Random random){
 		return new Location(world, 0, height + 1, 0);
 	}
-	
-	private int coordsToInt(int x, int y, int z){
-			return (x * 16 + z) * 256 + y;
-	}
-	
-	public byte[] generate(World world, Random rand, int chunkx, int chunkz){
-		byte[] blocks = new byte[65536];
+
+	@Override
+	public ChunkData generateChunkData(World world, Random random, int chunkx, int chunkz, BiomeGrid biome) {
+		ChunkData blocks = createChunkData(world);
 		int x, y, z;
-		
+
 		for (x = 0; x < 16; ++x){
 			for (z = 0; z < 16; ++z){
-				blocks[this.coordsToInt(x, 0, z)] = (byte) Material.BEDROCK.getId();
+				blocks.setBlock(x, 0, z, Material.BEDROCK);
 				for (y = 1; y < height; ++y){
-					blocks[this.coordsToInt(x, y, z)] = (byte) Material.STONE.getId();
+					blocks.setBlock(x, y, z, Material.STONE);
 				}
-				blocks[this.coordsToInt(x, height, z)] = (byte) Material.WOOL.getId();
-				world.setBiome(x, z, BiomeFLB);
+				blocks.setBlock(x, height, z, Material.WHITE_WOOL);
+				biome.setBiome(x, z, BiomeFLB);
 			}
 		}
 		return blocks;

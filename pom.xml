@@ -5,7 +5,7 @@
 
         <groupId>flatlandsbuilder</groupId>
         <artifactId>flatlandsbuilder</artifactId>
-        <version>0.7.0-R2.0-upd-1.8.8</version>
+        <version>0.7.0-R2.0-upd-1.13.2</version>
 
         <name>FlatlandsBuilder</name>
 
@@ -29,7 +29,7 @@
                 <dependency>
                         <groupId>org.spigotmc</groupId>
                         <artifactId>spigot-api</artifactId>
-                        <version>1.8.8-R0.1-SNAPSHOT</version>
+                        <version>1.13.2-R0.1-SNAPSHOT</version>
                         <scope>provided</scope>
                 </dependency>
         </dependencies>

@@ -10,3 +10,4 @@ commands:
         description: Informs player of FlatlandsBuilder version.
         usage: /flb help for more information.
         aliases: [fb, flatlandsbuilder]
+api-version: 1.13

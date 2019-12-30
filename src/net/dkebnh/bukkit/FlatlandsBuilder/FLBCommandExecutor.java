@@ -20,62 +20,9 @@ public class FLBCommandExecutor implements CommandExecutor {
 	}
 
 	public boolean isValidBlock(String block){
-		String materialTokens[] = block.split("[:]");		// Splits Block Type and Type ID into 2 so it can be parsed by the FlatlandsBuilder.
-        
-		Material mat = Material.matchMaterial(materialTokens[0]);
-		
-        if (materialTokens.length <= 2){
-        	try{
-        				if (materialTokens.length == 2){
-        					int dataBlockValue = Integer.parseInt(materialTokens[1]);
-        					if (dataBlockValue <= 15){
-        					if (mat == null){
-            					try{
-            						mat = Material.getMaterial(Integer.parseInt(materialTokens[0]));
-            					}catch (Exception e){
-            		        
-            					}
-            		    	
-            					if (mat == null){
-            						return false;
-            					}
-            				}
-            				
-            				if (!mat.isBlock()){
-            					return false;
-            				}else{
-            					return true;
-            				}
-        					}else{
-        						return false;
-        					}
-        				}else{
-        					if (mat == null){
-            					try{
-            						mat = Material.getMaterial(Integer.parseInt(materialTokens[0]));
-            					}catch (Exception e){
-            		        
-            					}
-            		    	
-            					if (mat == null){
-            						return false;
-            					}
-            				}
-            				
-            				if (!mat.isBlock()){
-            					return false;
-            				}else{
-            					return true;
-            				}	
-        				}
-        	}catch (Exception e){
-            	plugin.log.warningMSG("[FlatlandsBuilder] Unable to validate block. New default block value not set.");
-            	return false;
-        	}
-        }else{
-        	plugin.log.warningMSG("[FlatlandsBuilder] Unable to validate block. New default block value not set.");
-        	return false;
-        }
+		Material mat = Material.matchMaterial(block);
+
+		return mat != null && mat.isBlock();
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
