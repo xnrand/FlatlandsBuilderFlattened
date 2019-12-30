@@ -10,9 +10,9 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class FlatlandsBuilder extends JavaPlugin {
-	
+
 	protected FLBLogger log;
-	
+
 	private File confFile;
 	public YamlConfiguration conf;
 	int height = 64;
@@ -20,14 +20,17 @@ public class FlatlandsBuilder extends JavaPlugin {
 	String block1 = "black_wool";
 	String block2 = "gray_wool";
 	String block3 = "light_gray_wool";
-	List<String> blacklist = Arrays.asList("lava","water","tnt","bedrock");
-    String worldname = "flatlands";
-    
-    public void onEnable(){
-		File dFolder = getDataFolder();		
-		if(!dFolder.exists()) dFolder.mkdirs();		
-		confFile = new File(dFolder, "config.yml");        
-	this.getServer().getWorldContainer();
+	List<String> blacklist = Arrays.asList("lava", "water", "tnt", "bedrock");
+	String worldname = "flatlands";
+
+	@Override
+	public void onEnable() {
+		File dFolder = getDataFolder();
+		if (!dFolder.exists()) {
+			dFolder.mkdirs();
+		}
+		confFile = new File(dFolder, "config.yml");
+		this.getServer().getWorldContainer();
 		if (confFile.exists()) {
 			conf = YamlConfiguration.loadConfiguration(confFile);
 			height = conf.getInt("global.defaults.height");
@@ -36,61 +39,64 @@ public class FlatlandsBuilder extends JavaPlugin {
 			block2 = conf.getString("global.defaults.block2");
 			block3 = conf.getString("global.defaults.block3");
 			blacklist = conf.getStringList("global.blacklist");
-			
-			if (conf.contains("worlds." + worldname)){
+
+			if (conf.contains("worlds." + worldname)) {
 				System.out.println(worldname + " exists in config, parsing settings");
 			}
-			
+
 			String[] vars = new String[5];
-			
+
 			vars[0] = "[FlatlandsBuilder] Default height is: " + Integer.toString(height);
 			vars[1] = "[FlatlandsBuilder] Default generation mode is: " + genMode;
 			vars[2] = "[FlatlandsBuilder] Default fill block is: " + block1;
 			vars[3] = "[FlatlandsBuilder] Default border 1 block is: " + block2;
 			vars[4] = "[FlatlandsBuilder] Default border 2 block is: " + block3;
-			
-			for(int s = 0; s < vars.length; s ++){
-				System.out.println(vars[s]);
+
+			for (String var : vars) {
+				System.out.println(var);
 			}
 
-		}else{        	
-			conf = new YamlConfiguration();        	
-			conf.set("global.defaults.height", 64);       
-			conf.set("global.defaults.mode", "grid2"); 
+		} else {
+			conf = new YamlConfiguration();
+			conf.set("global.defaults.height", 64);
+			conf.set("global.defaults.mode", "grid2");
 			conf.set("global.defaults.block1", "black_wool");
 			conf.set("global.defaults.block2", "gray_wool");
 			conf.set("global.defaults.block3", "light_gray_wool");
 			conf.set("global.blacklist", blacklist);
-			conf.set("worlds.flatlands.height", 64);       
-			conf.set("worlds.flatlands.mode", "grid2"); 
+			conf.set("worlds.flatlands.height", 64);
+			conf.set("worlds.flatlands.mode", "grid2");
 			conf.set("worlds.flatlands.block1", "black_wool");
 			conf.set("worlds.flatlands.block2", "gray_wool");
 			conf.set("worlds.flatlands.block3", "light_gray_wool");
 			saveSettings();
 		}
-		
+
 		this.log = new FLBLogger(this);
 		this.getCommand("flb").setExecutor(new FLBCommandExecutor(this));
 	}
-	
-	public void onDisable(){
- 
+
+	@Override
+	public void onDisable() {
+
 	}
-	
+
 	public boolean saveSettings() {
-		if (!confFile.exists()) {			
-			confFile.getParentFile().mkdirs();		
-		}try{			
-			conf.save(confFile);			
-			return true;		
-			}catch (IOException e){
-				e.printStackTrace();		
-			}			
+		if (!confFile.exists()) {
+			confFile.getParentFile().mkdirs();
+		}
+		try {
+			conf.save(confFile);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
-	
-	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id){
+
+	@Override
+	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
 		return new FLBGenerator(id);
 	}
-	
+
 }
