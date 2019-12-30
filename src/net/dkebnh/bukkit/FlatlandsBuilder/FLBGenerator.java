@@ -22,7 +22,7 @@ public class FLBGenerator extends ChunkGenerator {
 	private final Material[] BlockFLB = new Material[3];
 	private final Biome BiomeFLB = Biome.PLAINS;
 
-	public void setDefaults(String msg) {
+	private void setDefaults(String msg) {
 		genMode = "grid2";
 		BlockFLB[0] = Material.BLACK_WOOL;
 		BlockFLB[1] = Material.GRAY_WOOL;
@@ -34,10 +34,6 @@ public class FLBGenerator extends ChunkGenerator {
 			height = 64;
 		}
 		this.log.warning(msg);
-	}
-
-	public FLBGenerator() {
-		this("64,black_wool:gray_wool,light_gray_wool");
 	}
 
 	public FLBGenerator(String id) {

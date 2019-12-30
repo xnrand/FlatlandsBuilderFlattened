@@ -13,7 +13,7 @@ public class FLBPopulator extends BlockPopulator {
 	private final int height;
 	private Material BlockFLB[] = new Material[3];
 
-	protected FLBPopulator(int height, Material[] BlockFLB, String genMode) {
+	public FLBPopulator(int height, Material[] BlockFLB, String genMode) {
 		this.genMode = genMode;
 		this.height = height;
 		this.BlockFLB = BlockFLB;

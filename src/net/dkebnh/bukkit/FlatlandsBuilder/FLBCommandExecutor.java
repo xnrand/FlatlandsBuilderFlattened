@@ -19,7 +19,7 @@ public class FLBCommandExecutor implements CommandExecutor {
 		this.plugin = plugin;
 	}
 
-	public boolean isValidBlock(String block) {
+	private boolean isValidBlock(String block) {
 		Material mat = Material.matchMaterial(block);
 
 		return mat != null && mat.isBlock();
